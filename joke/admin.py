@@ -9,7 +9,7 @@ class UserAdmin(admin.ModelAdmin):
 	search_fields = ('id', 'account')
 
 class CategoryAdmin(admin.ModelAdmin):
-	list_display = ('title', 'status', 'ctime', 'mtime')
+	list_display = ('name', 'status', 'ctime', 'mtime')
 	list_filter = ('ctime',)
 	search_fields = ('id', 'title')
 
@@ -26,5 +26,5 @@ class CommentAdmin(admin.ModelAdmin):
 admin.site.register(User,UserAdmin)
 admin.site.register(Category,CategoryAdmin)
 admin.site.register(Joke,JokeAdmin)
-admin.site,register(Comment,CommentAdmin)
+admin.site.register(Comment,CommentAdmin)
 
