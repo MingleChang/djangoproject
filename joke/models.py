@@ -5,6 +5,7 @@ from django.db import models
 import datetime,uuid
 # Create your models here.
 
+#用户
 class User(models.Model):
 	#id
 	id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -24,6 +25,8 @@ class User(models.Model):
 	birthtime=models.TimeField(null=True,blank=True)
 	#个人介绍
 	introduction=models.CharField(max_length=1000,blank=True)
+	#状态
+	status=models.IntegerField(default=0)
 	#创建时间
 	ctime=models.DateTimeField(auto_now=True)
 	#最后修改时间
@@ -32,6 +35,23 @@ class User(models.Model):
 	def __unicode__(self):
 		return self.account
 
+#类别
+class Category(models.Model):
+	#id
+	id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+	#分类名
+	name=models.CharField(max_length=200)
+	#状态
+	status=models.IntegerField(default=0)
+	#创建时间
+	ctime=models.DateTimeField(auto_now=True)
+	#最后修改时间
+	mtime=models.DateTimeField(auto_now_add=True)
+
+	def __unicode__(self):
+		return self.name
+		
+#内容
 class Joke(models.Model):
 	#id
 	id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -40,10 +60,43 @@ class Joke(models.Model):
 	#内容
 	content=models.TextField()
 	#作者
-	author=models.ForeignKey(User)
+	author=models.ForeignKey(User,related_name='createjokes')
+	#类别
+	category=models.ForeignKey(Category,related_name='jokes')
+	#点赞用户
+	likes=models.ManyToManyField(User,related_name='likejokes',null=True)
+	#收藏用户
+	collects=models.ManyToManyField(User,related_name='collectjokes',null=True)
+	#状态
+	status=models.IntegerField(default=0)
+	#创建时间
+	ctime=models.DateTimeField(auto_now=True)
+	#最后修改时间
+	mtime=models.DateTimeField(auto_now_add=True)
+
 
 	def __unicode__(self):
 		return self.content
 
+#评论
+class Comment(models.Model):
+	#id
+	id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+	#评论详情
+	content=models.TextField()
+	#评论人
+	user=models.ForeignKey(User,related_name='comments')
+	#被评论joke
+	joke=models.ForeignKey(Joke,related_name='comments')
+	#状态
+	status=models.IntegerField(default=0)
+	#创建时间
+	ctime=models.DateTimeField(auto_now=True)
+	#最后修改时间
+	mtime=models.DateTimeField(auto_now_add=True)
+
+	def __unicode__(self):
+		return self.content
+		
 		
 		
