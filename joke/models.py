@@ -74,9 +74,16 @@ class Joke(models.Model):
 	#最后修改时间
 	mtime=models.DateTimeField(auto_now_add=True, verbose_name='修改时间')
 
-
 	def __unicode__(self):
 		return self.content
+
+	def toJsonValue(self):
+		dic={'id':self.id.hex,
+		'title':self.title,
+		'content':self.content,
+		'authorId':self.author.id.hex,
+		'authorName':self.author.account}
+		return dic
 
 #评论
 class Comment(models.Model):
