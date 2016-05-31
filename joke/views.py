@@ -18,13 +18,26 @@ def categoryList(request):
 
 @csrf_exempt
 def jokeList(request):
-	search=request.POST.get('search','')
-	categoryId=request.POST.get('categoryId','')
-	userId=request.POST.get('userId','')
-	startIndex=request.POST.get('startIndex',0)
-	pageCount=request.POST.get('pageCount',10)
+	search=request.GET.get('search','')
+	categoryId=request.GET.get('categoryId','')
+	userId=request.GET.get('userId','')
+	startIndex=request.GET.get('startIndex',0)
+	pageCount=request.GET.get('pageCount',10)
 
-	jokeList=[joke.toJsonValue() for joke in Joke.objects.all()]
+	# jokes = null
+	jokes=Joke.objects
+	if userId != '':
+		jokes=jokes.filter(author = userId)
+
+	if search != '':
+		jokes = jokes.filter(title__contains = search, content__contains = search)
+
+	if categoryId != '':
+		jokes = jokes.filter(category = categoryId)
+
+	jokes=jokes[startIndex:pageCount]
+
+	jokeList=[joke.toJsonValue() for joke in jokes.all()]
 	return HttpResponse(json.dumps(jokeList))
 
 def notFound(request):
