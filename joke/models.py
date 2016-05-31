@@ -35,6 +35,11 @@ class User(models.Model):
 	def __unicode__(self):
 		return self.account
 
+	def toJsonValue(self):
+		dic={'id':self.id.hex,
+		'account':self.account,
+		'nickName':self.nickname}
+		return dic;
 #类别
 class Category(models.Model):
 	#id
@@ -50,6 +55,11 @@ class Category(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+	def toJsonValue(self):
+		dic={'id':self.id.hex,
+		'name':self.name}
+		return dic;
 		
 #内容
 class Joke(models.Model):
@@ -82,7 +92,9 @@ class Joke(models.Model):
 		'title':self.title,
 		'content':self.content,
 		'authorId':self.author.id.hex,
-		'authorName':self.author.account}
+		'authorName':self.author.account,
+		'categoryId':self.category.id.hex,
+		'categoryName':self.category.name}
 		return dic
 
 #评论
@@ -104,6 +116,14 @@ class Comment(models.Model):
 
 	def __unicode__(self):
 		return self.content
+
+	def toJsonValue(self):
+		dic={'id':self.id.hex,
+		'content':self.content,
+		'userId':self.user.id.hex,
+		'userName':self.user.account,
+		'jokeId':self.joke.id.hex}
+		return dic
 		
 		
 		
