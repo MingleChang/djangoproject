@@ -40,5 +40,13 @@ def jokeList(request):
 	jokeList=[joke.toJsonValue() for joke in jokes.all()]
 	return HttpResponse(json.dumps(jokeList))
 
+def jokeDetail(request):
+	jokeId=request.GET.get('jokeId','')
+	
+	if joke:
+		return HttpResponse(json.dumps(joke.toJsonValue()))
+	else:
+		return HttpResponse('NONE')
+
 def notFound(request):
 	return HttpResponse('404')

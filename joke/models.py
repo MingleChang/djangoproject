@@ -8,7 +8,7 @@ import datetime,uuid
 #用户
 class User(models.Model):
 	#id
-	id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+	id=models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
 	#帐号
 	account=models.CharField(unique=True,max_length=200, verbose_name='帐号')
 	#密码
@@ -43,7 +43,7 @@ class User(models.Model):
 #类别
 class Category(models.Model):
 	#id
-	id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+	id=models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
 	#分类名
 	name=models.CharField( max_length=200, verbose_name='分类名')
 	#状态
@@ -64,7 +64,7 @@ class Category(models.Model):
 #内容
 class Joke(models.Model):
 	#id
-	id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+	id=models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
 	#标题
 	title=models.CharField(max_length=500, verbose_name='标题')
 	#内容
@@ -100,7 +100,7 @@ class Joke(models.Model):
 #评论
 class Comment(models.Model):
 	#id
-	id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+	id=models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)
 	#评论详情
 	content=models.TextField(verbose_name='评论详情')
 	#评论人
