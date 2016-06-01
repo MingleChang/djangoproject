@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import User,Category,Joke,Comment
 from django.views.decorators.csrf import csrf_exempt
-import json
+import json,uuid
 # Create your views here.
 
 def test(request):
@@ -24,21 +24,33 @@ def jokeList(request):
 	startIndex=request.GET.get('startIndex',0)
 	pageCount=request.GET.get('pageCount',10)
 
-	# jokes = null
 	jokes=Joke.objects
 	if userId != '':
+		try:
+			uuid.UUID(userId)
+		except Exception, e:
+			return HttpResponse('UserId格式错误')
 		jokes=jokes.filter(author = userId)
 
 	if search != '':
 		jokes = jokes.filter(title__contains = search, content__contains = search)
 
 	if categoryId != '':
+		try:
+			uuid.UUID(categoryId)
+		except Exception, e:
+			return HttpResponse('categoryId格式错误')
 		jokes = jokes.filter(category = categoryId)
 
-	jokes=jokes[startIndex:pageCount]
+	jokes=jokes.all()[startIndex:pageCount]
 
-	jokeList=[joke.toJsonValue() for joke in jokes.all()]
-	return HttpResponse(json.dumps(jokeList))
+	try:
+		jokeList=[joke.toJsonValue() for joke in jokes]
+	except Exception, e:
+		return HttpResponse(e)
+	else:
+		return HttpResponse(json.dumps(jokeList))
+	
 
 def jokeDetail(request):
 	jokeId=request.GET.get('jokeId','')
