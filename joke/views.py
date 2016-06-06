@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .models import User,Category,Joke,Comment
 from django.views.decorators.csrf import csrf_exempt
 import json,uuid
+import utility
 # Create your views here.
 
 def test(request):
@@ -14,7 +15,8 @@ def test(request):
 @csrf_exempt
 def categoryList(request):
 	categoryList=[category.toJsonValue() for category in Category.objects.all()]
-	return HttpResponse(json.dumps(categoryList))
+	result=utility.apiJson(status=200,data=categoryList)
+	return HttpResponse(result)
 
 @csrf_exempt
 def jokeList(request):
@@ -29,7 +31,7 @@ def jokeList(request):
 		try:
 			uuid.UUID(userId)
 		except Exception, e:
-			return HttpResponse('UserId格式错误')
+			return HttpResponse(utility.apiJson(status=300,message='UserId格式错误'))
 		jokes=jokes.filter(author = userId)
 
 	if search != '':
@@ -39,7 +41,7 @@ def jokeList(request):
 		try:
 			uuid.UUID(categoryId)
 		except Exception, e:
-			return HttpResponse('categoryId格式错误')
+			return HttpResponse(utility.apiJson(status=300,message='categoryId格式错误'))
 		jokes = jokes.filter(category = categoryId)
 
 	jokes=jokes.all()[startIndex:pageCount]
@@ -47,9 +49,9 @@ def jokeList(request):
 	try:
 		jokeList=[joke.toJsonValue() for joke in jokes]
 	except Exception, e:
-		return HttpResponse(e)
+		return HttpResponse(utility.apiJson(status=500))
 	else:
-		return HttpResponse(json.dumps(jokeList))
+		return HttpResponse(utility.apiJson(status=200,data=jokeList))
 	
 
 def jokeDetail(request):
@@ -61,4 +63,4 @@ def jokeDetail(request):
 		return HttpResponse('NONE')
 
 def notFound(request):
-	return HttpResponse('404')
+	return HttpResponse(utility.apiJson())
