@@ -17,6 +17,7 @@ class JokeAdmin(admin.ModelAdmin):
 	list_display = ('title', 'content', 'status', 'ctime', 'mtime')
 	list_filter = ('ctime',)
 	search_fields = ('id', 'title', 'content')
+	
 class CommentAdmin(admin.ModelAdmin):
 	list_display = ('content', 'status', 'ctime', 'mtime')
 	list_filter = ('ctime',)

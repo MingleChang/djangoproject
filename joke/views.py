@@ -76,7 +76,6 @@ def jokeDetail(request):
 		except Exception, e:
 			result=utility.apiJson(status=utility.CODE_PARAM_ERROR,message='jokeId格式错误')
 			return HttpResponse(result)
-	
 	try:
 		joke=Joke.objects.get(pk=jokeId)
 	except Exception, e:
