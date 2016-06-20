@@ -10,10 +10,6 @@ import utility
 @csrf_exempt
 def categoryList(request):
 	categoryList=[category.toJsonValue() for category in Category.objects.all()]
-<<<<<<< HEAD
-	result=utility.apiJson(status=200,data=categoryList)
-	return HttpResponse(result)
-=======
 	try:
 		result=utility.apiJson(status=utility.CODE_SUCCESS,data=categoryList)
 	except Exception, e:
@@ -21,7 +17,6 @@ def categoryList(request):
 		return HttpResponse(result)
 	else:
 		return HttpResponse(result)
->>>>>>> origin/master
 
 # Joke列表的api
 @csrf_exempt
@@ -39,12 +34,8 @@ def jokeList(request):
 		try:
 			uuid.UUID(userId)
 		except Exception, e:
-<<<<<<< HEAD
-			return HttpResponse(utility.apiJson(status=300,message='UserId格式错误'))
-=======
 			result=utility.apiJson(status=utility.CODE_PARAM_ERROR,message='UserId格式错误')
 			return HttpResponse(result)
->>>>>>> origin/master
 		jokes=jokes.filter(author = userId)
 
 	if search != '':
@@ -55,12 +46,8 @@ def jokeList(request):
 		try:
 			uuid.UUID(categoryId)
 		except Exception, e:
-<<<<<<< HEAD
-			return HttpResponse(utility.apiJson(status=300,message='categoryId格式错误'))
-=======
 			result=utility.apiJson(status=utility.CODE_PARAM_ERROR,message='categoryId格式错误')
 			return HttpResponse(result)
->>>>>>> origin/master
 		jokes = jokes.filter(category = categoryId)
 
 	#分页处理
@@ -70,17 +57,10 @@ def jokeList(request):
 		jokeList=[joke.toJsonValue() for joke in jokes]
 		result=utility.apiJson(status=utility.CODE_SUCCESS,data=jokeList)
 	except Exception, e:
-<<<<<<< HEAD
-		return HttpResponse(utility.apiJson(status=500))
-	else:
-		return HttpResponse(utility.apiJson(status=200,data=jokeList))
-	
-=======
 		result=utility.apiJson(status=utility.CODE_SERVER_ERROR,message='服务器异常')
 		return HttpResponse(result)
 	else:
 		return HttpResponse(result)
->>>>>>> origin/master
 
 #joke详情
 @csrf_exempt
@@ -106,9 +86,5 @@ def jokeDetail(request):
 		return HttpResponse(result)
 
 def notFound(request):
-<<<<<<< HEAD
-	return HttpResponse(utility.apiJson())
-=======
 	result=utility.apiJson(status=utility.CODE_NOT_FOUND,message='该接口不存在')
 	return HttpResponse(result)
->>>>>>> origin/master
